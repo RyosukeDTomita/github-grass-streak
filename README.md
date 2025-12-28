@@ -8,8 +8,8 @@
 
 - [ABOUT](#about)
 - [ENVIRONMENT](#environment)
-- [PREPARING](#preparing)
 - [HOW TO USE](#how-to-use)
+- [For Developers](#for-developers)
 
 ---
 
@@ -26,7 +26,18 @@ deno 2.6.3
 
 ---
 
-## PREPARING
+## HOW TO USE
+
+1. Fork this repository.
+2. Go to `Settings` > `Secrets and variables` > `Actions` in your repository.
+3. Click `New repository secret` and add a Personal Access Token (with `repo` and `read:user` scopes) with the following name:
+    - `GH_TOKEN`
+4. Check and update your GitHub username in `.github/workflows/main.yml`.
+5. Enable Actions and either run the `Create GitHub Streak SVG` workflow manually, or wait for the next scheduled run (every day at 9:00 JST).
+
+---
+
+## For Developers
 
 1. install deno using nix:
 
@@ -48,18 +59,3 @@ deno 2.6.3
     deno task start
     ls github-streak.svg
     ```
-
----
-
-## HOW TO USE
-
----
-
-## 使い方
-
-1. このリポジトリをフォークします。
-2. リポジトリの `Settings` > `Secrets and variables` > `Actions` に移動します。
-3. `New repository secret` をクリックし、以下の名前でPersonal Access Token（`repo` と `read:user` スコープを持つ）を登録します:
-    - `GH_TOKEN`
-4. `.github/workflows/main.yml` に記載されている自分のGitHubユーザー名を確認・変更します。
-5. Actionsを有効にし、`Create GitHub Streak SVG` ワークフローを手動で実行するか、次回のスケジュール実行（毎日 JST 9:00）を待ちます。
