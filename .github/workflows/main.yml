@@ -32,7 +32,7 @@ jobs:
         env:
           GH_USER: ${{ github.repository_owner }}
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: nix shell .#default --command deno task start
+        run: nix develop --command deno task start
 
       - name: Prepare artifact
         run: |
