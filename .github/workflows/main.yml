@@ -1,10 +1,11 @@
 name: Create GitHub Streak SVG and Deploy to Pages
 
 on:
-  schedule:
-    # Runs every day at 00:00 UTC (9:00 JST)
-    - cron: '0 0 * * *'
-  workflow_dispatch:
+  #schedule:
+  #  # Runs every day at 00:00 UTC (9:00 JST)
+  #  - cron: '0 0 * * *'
+  #workflow_dispatch:
+  push
 
 permissions:
   contents: read
