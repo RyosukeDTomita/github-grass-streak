@@ -2,7 +2,7 @@
 
 ![mit license](https://img.shields.io/github/license/RyosukeDTomita/github-grass-streak)
 
-![GitHub Streak](github-streak.svg)
+[![GitHub Grass Streak](https://ryosukedtomita.github.io/github-grass-streak/github-streak.svg)](https://github.com/RyosukeDTomita/github-grass-streak)
 
 ## INDEX
 
@@ -34,6 +34,12 @@ deno 2.6.3
     - `GH_TOKEN`
 4. Check and update your GitHub username in `.github/workflows/main.yml`.
 5. Enable Actions and either run the `Create GitHub Streak SVG` workflow manually, or wait for the next scheduled run (every day at 9:00 JST).
+6. Use streak badge.
+
+  ```md
+  [![GitHub Grass Streak](https://ryosukedtomita.github.io/github-grass-streak/github-streak.svg)](https://github.com/RyosukeDTomita/github-grass-streak)
+  ```
+
 
 ---
 
