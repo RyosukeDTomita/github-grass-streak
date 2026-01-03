@@ -3,12 +3,20 @@ name: Create GitHub Streak SVG and Deploy to Pages
 on:
   push:
     branches: [ "main" ]
+    paths-ignore:
+      - '**.md'
+      - 'LICENSE'
+      - '.gitignore'
   schedule:
     # Runs every day at 00:00 UTC (9:00 JST)
     - cron: "0 0 * * *"
   workflow_dispatch:
   pull_request:
     branches: [ "main" ]
+    paths-ignore:
+      - '**.md'
+      - 'LICENSE'
+      - '.gitignore'
 
 permissions:
   contents: read

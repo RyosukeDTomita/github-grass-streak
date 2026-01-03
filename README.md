@@ -77,7 +77,7 @@ deno 2.6.3
 4. run the script to check if it works:
 
    ```shell
-   deno task test # unit test
-   deno task start
+   deno run test # unit test
+   deno run start
    ls github-streak.svg
    ```
