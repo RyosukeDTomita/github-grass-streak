@@ -2,9 +2,26 @@ name: Deno Test
 
 on:
   push:
-    branches: [ "main" ]
+    # main以外へのpush
+    branches-ignore:
+      - main
+    paths:
+      - '**/*.ts'
+      - '.github/workflows/deno_test.yml'
+      - 'flake.nix'
+      - 'flake.lock'
+      - deno.lock
+      - deno.jsonc
+  # mainブランチへのPRとその更新
   pull_request:
     branches: [ "main" ]
+    paths:
+      - '**/*.ts'
+      - '.github/workflows/deno_test.yml'
+      - 'flake.nix'
+      - 'flake.lock'
+      - deno.lock
+      - deno.jsonc
 
 jobs:
   test:
@@ -18,5 +35,17 @@ jobs:
       with:
         nix_path: nixpkgs=channel:nixos-unstable
 
-    - name: Run Deno tests
-      run: nix develop --command -- deno test --allow-net --allow-env
+    - name: Run Deno tests with coverage
+      run: nix develop --command -- deno test --allow-net --allow-env --coverage=coverage
+
+    - name: Generate LCOV coverage report
+      run: nix develop --command -- deno coverage coverage --lcov --output=coverage.lcov
+
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v5
+      with:
+        files: ./coverage.lcov
+        flags: unittests
+        name: codecov-umbrella
+        fail_ci_if_error: false
+        token: ${{ secrets.CODECOV_TOKEN }}
