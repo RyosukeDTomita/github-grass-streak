@@ -1,0 +1,3 @@
+- Do not use inline imports, use deno.jsonc import map instead.
+- Do not use `Null` instead use `Option` from `fp-ts`.
+- GitHub Actions workflow should use Nix Flakes for setting up Deno environment.
