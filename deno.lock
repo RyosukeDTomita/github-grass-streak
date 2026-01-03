@@ -1,0 +1,16 @@
+{
+  "version": "5",
+  "specifiers": {
+    "npm:fp-ts@2.16.9": "2.16.9"
+  },
+  "npm": {
+    "fp-ts@2.16.9": {
+      "integrity": "sha512-+I2+FnVB+tVaxcYyQkHUq7ZdKScaBlX53A41mxQtpIccsfyv8PzdzP7fzp2AY832T4aoK6UZ5WRX/ebGd8uZuQ=="
+    }
+  },
+  "workspace": {
+    "dependencies": [
+      "npm:fp-ts@2.16.9"
+    ]
+  }
+}

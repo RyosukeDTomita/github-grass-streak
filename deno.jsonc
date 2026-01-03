@@ -1,5 +1,11 @@
 {
   "tasks": {
     "start": "deno run --allow-net --allow-env --allow-write main.ts"
+  },
+  "imports": {
+    "fp-ts/function": "npm:fp-ts@2.16.9/lib/function.js",
+    "fp-ts/Array": "npm:fp-ts@2.16.9/lib/Array.js",
+    "fp-ts/Option": "npm:fp-ts@2.16.9/lib/Option.js",
+    "fp-ts/NonEmptyArray": "npm:fp-ts@2.16.9/lib/NonEmptyArray.js"
   }
 }
