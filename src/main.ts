@@ -1,6 +1,8 @@
 import { GH_TOKEN, GH_USER } from "./config.ts";
 import { calculateStreak, createSvg } from "./streak.ts";
 import { getContributionData } from "./githubApi.ts";
+import { pipe } from "fp-ts/function";
+import * as O from "fp-ts/Option";
 
 async function main() {
   if (!GH_USER) {
@@ -18,8 +20,18 @@ async function main() {
   const streakInfo = calculateStreak(weeks);
   const svg = createSvg(streakInfo);
   await Deno.writeTextFile("github-streak.svg", svg);
+  const dateRange = pipe(
+    streakInfo.startDate,
+    O.chain((start) =>
+      pipe(
+        streakInfo.endDate,
+        O.map((end) => `(${start} - ${end})`),
+      )
+    ),
+    O.getOrElse(() => ""),
+  );
   console.log(
-    `Successfully generated github-streak.svg with a streak of ${streakInfo.streak} days (${streakInfo.startDate} - ${streakInfo.endDate}).`,
+    `Successfully generated github-streak.svg with a streak of ${streakInfo.streak} days ${dateRange}.`,
   );
 }
 

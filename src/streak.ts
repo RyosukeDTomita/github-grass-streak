@@ -7,16 +7,30 @@ import * as NEA from "fp-ts/NonEmptyArray";
 
 interface StreakInfo {
   streak: number;
-  startDate: string | null;
-  endDate: string | null;
+  startDate: O.Option<string>;
+  endDate: O.Option<string>;
 }
 
+/**
+ * 日本時間（JST、UTC+9）の日付文字列（YYYY-MM-DD）を取得
+ * @param date UTC date
+ * @return string date in JST (YYYY-MM-DD)
+ */
+function getJSTDateString(date: Date): string {
+  const jstDate = new Date(date.getTime() + 9 * 60 * 60 * 1000);
+  return jstDate.toISOString().slice(0, 10);
+}
+
+/**
+ * @param weeks
+ * @returns
+ */
 function calculateStreak(weeks: Week[]): StreakInfo {
   const today = new Date();
   const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
 
-  const todayStr = today.toISOString().slice(0, 10);
-  const yesterdayStr = yesterday.toISOString().slice(0, 10);
+  const todayStr = getJSTDateString(today);
+  const yesterdayStr = getJSTDateString(yesterday);
 
   return pipe(
     weeks,
@@ -60,8 +74,8 @@ function calculateStreak(weeks: Week[]): StreakInfo {
             ),
             (result): StreakInfo => ({
               streak: result.streak,
-              startDate: result.dates[result.dates.length - 1] || null,
-              endDate: result.dates[0] || null,
+              startDate: O.fromNullable(result.dates[result.dates.length - 1]),
+              endDate: O.fromNullable(result.dates[0]),
             }),
           )
         ),
@@ -69,8 +83,8 @@ function calculateStreak(weeks: Week[]): StreakInfo {
     ),
     O.getOrElse((): StreakInfo => ({
       streak: 0,
-      startDate: null,
-      endDate: null,
+      startDate: O.none,
+      endDate: O.none,
     })),
   );
 }
@@ -132,8 +146,12 @@ function createSvg(streakInfo: StreakInfo): string {
         Days Streak
       </text>
       ${
-    streakInfo.startDate && streakInfo.endDate
-      ? `
+    pipe(
+      streakInfo.startDate,
+      O.chain((start) =>
+        pipe(
+          streakInfo.endDate,
+          O.map((end) => `
       <text
         x="80"
         y="110"
@@ -143,9 +161,12 @@ function createSvg(streakInfo: StreakInfo): string {
         font-weight="normal"
         fill="${COLORS.base01}"
       >
-        ${streakInfo.startDate} - ${streakInfo.endDate}
-      </text>`
-      : ""
+        ${start} - ${end}
+      </text>`),
+        )
+      ),
+      O.getOrElse(() => ""),
+    )
   }
     </svg>
   `;

@@ -13,10 +13,10 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Setup Deno
-      uses: denoland/setup-deno@v1
+    - name: Install Nix
+      uses: cachix/install-nix-action@v22
       with:
-        deno-version: v1.x
+        nix_path: nixpkgs=channel:nixos-unstable
 
     - name: Run Deno tests
-      run: deno test --allow-net --allow-env
+      run: nix develop --command -- deno test --allow-net --allow-env
