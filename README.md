@@ -1,6 +1,7 @@
 # GitHub Grass Streak
 
 ![mit license](https://img.shields.io/github/license/RyosukeDTomita/github-grass-streak)
+[![codecov](https://codecov.io/gh/RyosukeDTomita/github-grass-streak/graph/badge.svg?token=KZeTiIlWBZ)](https://codecov.io/gh/RyosukeDTomita/github-grass-streak)
 [![Deno Test](https://github.com/RyosukeDTomita/github-grass-streak/actions/workflows/deno_test.yml/badge.svg)](https://github.com/RyosukeDTomita/github-grass-streak/actions/workflows/deno_test.yml)
 [![Create GitHub Streak SVG and Deploy to Pages](https://github.com/RyosukeDTomita/github-grass-streak/actions/workflows/main.yml/badge.svg)](https://github.com/RyosukeDTomita/github-grass-streak/actions/workflows/main.yml)
 
@@ -75,6 +76,7 @@ deno 2.6.3
 4. run the script to check if it works:
 
    ```shell
+   deno task test # unit test
    deno task start
    ls github-streak.svg
    ```
