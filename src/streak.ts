@@ -78,7 +78,7 @@ function calculateStreak(weeks: Week[], now: Date = new Date()): StreakInfo {
                     dates: [...acc.dates, day.date],
                   };
                 } else if (day.date === todayStr) {
-                  // today contribution is 0 is allowed for streak(Today is not over yet).
+                  // A 0 contribution count for today does not break the streak because today is not over yet.
                   return acc;
                 } else {
                   return { ...acc, shouldContinue: false };
