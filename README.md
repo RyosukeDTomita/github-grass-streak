@@ -18,7 +18,7 @@
 ## ABOUT
 
 Create a GitHub contribution streak badge SVG using
-[GitHub EST API](https://docs.github.com/ja/rest?apiVersion=2022-11-28) and
+[GitHub REST API](https://docs.github.com/ja/rest?apiVersion=2022-11-28) and
 [Deno](https://deno.com/), and deploy it to
 [GitHub Pages](https://docs.github.com/ja/pages/getting-started-with-github-pages/creating-a-github-pages-site).
 

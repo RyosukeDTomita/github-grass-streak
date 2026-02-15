@@ -1,7 +1,6 @@
 import { GH_TOKEN, GH_USER } from "./config.ts";
 import { calculateStreak, createSvg } from "./streak.ts";
 import { getContributionData } from "./githubApi.ts";
-import { pipe } from "fp-ts/function";
 import * as O from "fp-ts/Option";
 
 async function main() {
