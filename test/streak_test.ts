@@ -1,6 +1,6 @@
 import { assertEquals } from "assertEquals";
 import { calculateStreak, createSvg } from "../src/streak.ts";
-import { Week, StreakInfo } from "../src/type.ts";
+import { StreakInfo, Week } from "../src/type.ts";
 import * as O from "fp-ts/Option";
 
 // ------streak count-----

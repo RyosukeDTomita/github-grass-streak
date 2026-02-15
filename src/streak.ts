@@ -1,5 +1,5 @@
 import { COLORS } from "./config.ts";
-import { Week, StreakInfo } from "./type.ts";
+import { StreakInfo, Week } from "./type.ts";
 import { pipe } from "fp-ts/function";
 import * as A from "fp-ts/Array";
 import * as O from "fp-ts/Option";

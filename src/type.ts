@@ -17,4 +17,4 @@ type StreakInfo = {
   ytdTotalDays: number;
 };
 
-export type { ContributionDay, Week, StreakInfo };
+export type { ContributionDay, StreakInfo, Week };
