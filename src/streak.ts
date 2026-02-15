@@ -9,6 +9,8 @@ interface StreakInfo {
   streak: number;
   startDate: O.Option<string>;
   endDate: O.Option<string>;
+  ytdGrassDays: number;
+  ytdTotalDays: number;
 }
 
 /**
@@ -21,6 +23,13 @@ function getJSTDateString(date: Date): string {
   return jstDate.toISOString().slice(0, 10);
 }
 
+function daysFromYearStart(todayStr: string): number {
+  const [year, month, day] = todayStr.split("-").map(Number);
+  const yearStart = Date.UTC(year, 0, 1);
+  const today = Date.UTC(year, month - 1, day);
+  return Math.floor((today - yearStart) / (24 * 60 * 60 * 1000)) + 1;
+}
+
 /**
  * @param weeks
  * @returns
@@ -31,10 +40,23 @@ function calculateStreak(weeks: Week[]): StreakInfo {
 
   const todayStr = getJSTDateString(today);
   const yesterdayStr = getJSTDateString(yesterday);
+  const yearStartStr = `${todayStr.slice(0, 4)}-01-01`;
+  const ytdTotalDays = daysFromYearStart(todayStr);
 
-  return pipe(
+  const allDays = pipe(
     weeks,
     A.flatMap((week) => week.contributionDays),
+  );
+
+  const ytdGrassDays = pipe(
+    allDays,
+    A.filter((day) => day.date >= yearStartStr && day.date <= todayStr),
+    A.filter((day) => day.contributionCount > 0),
+    A.size,
+  );
+
+  return pipe(
+    allDays,
     NEA.fromArray,
     O.chain((allDays) =>
       pipe(
@@ -76,6 +98,8 @@ function calculateStreak(weeks: Week[]): StreakInfo {
               streak: result.streak,
               startDate: O.fromNullable(result.dates[result.dates.length - 1]),
               endDate: O.fromNullable(result.dates[0]),
+              ytdGrassDays,
+              ytdTotalDays,
             }),
           )
         ),
@@ -85,6 +109,8 @@ function calculateStreak(weeks: Week[]): StreakInfo {
       streak: 0,
       startDate: O.none,
       endDate: O.none,
+      ytdGrassDays,
+      ytdTotalDays,
     })),
   );
 }
@@ -96,6 +122,9 @@ function calculateStreak(weeks: Week[]): StreakInfo {
 function createSvg(streakInfo: StreakInfo): string {
   const width = 160;
   const height = 120;
+  const ytdRate = streakInfo.ytdTotalDays === 0
+    ? 0
+    : (streakInfo.ytdGrassDays / streakInfo.ytdTotalDays) * 100;
 
   const icon = `
     <g transform="translate(15, 20)">
@@ -136,14 +165,36 @@ function createSvg(streakInfo: StreakInfo): string {
       </text>
       <text
         x="140"
-        y="80"
+        y="78"
         text-anchor="end"
         font-family="'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
-        font-size="16"
+        font-size="14"
         font-weight="normal"
         fill="${COLORS.base01}"
       >
         Days Streak
+      </text>
+      <text
+        x="104"
+        y="96"
+        text-anchor="end"
+        font-family="'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
+        font-size="11"
+        font-weight="normal"
+        fill="${COLORS.base01}"
+      >
+        YTD ${streakInfo.ytdGrassDays}/${streakInfo.ytdTotalDays}
+      </text>
+      <text
+        x="140"
+        y="96"
+        text-anchor="end"
+        font-family="'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
+        font-size="11"
+        font-weight="bold"
+        fill="${COLORS.blue}"
+      >
+        ${ytdRate.toFixed(1)}%
       </text>
       ${
     pipe(
@@ -154,7 +205,7 @@ function createSvg(streakInfo: StreakInfo): string {
           O.map((end) => `
       <text
         x="80"
-        y="110"
+        y="112"
         text-anchor="middle"
         font-family="'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
         font-size="12"
