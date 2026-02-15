@@ -78,7 +78,7 @@ Deno.test("calculateStreak - streak continues when today has no contribution", (
 
 // -----streak start date end date
 
-// TODO: 
+// TODO: asseertをstart end dateの検証に変更
 Deno.test("calculateStreak - start date and end date is null? when no contributions", () => {
   const now = new Date("2026-01-10T12:00:00Z");
   const today = "2026-01-10";
@@ -97,6 +97,7 @@ Deno.test("calculateStreak - start date and end date is null? when no contributi
   assertEquals(result.streak, 0);
 });
 
+// TODO: asseertをstart end dateの検証に変更
 Deno.test("calculateStreak - start date and end date is correct when streak is not zero", () => {
   const now = new Date("2026-01-10T12:00:00Z");
   const today = "2026-01-10";
@@ -105,14 +106,14 @@ Deno.test("calculateStreak - start date and end date is correct when streak is n
 
   const weeks: Week[] = [{
     contributionDays: [
-      { date: twoDaysAgo, contributionCount: 0 },
+      { date: twoDaysAgo, contributionCount: 1 },
       { date: yesterday, contributionCount: 0 },
-      { date: today, contributionCount: 0 },
+      { date: today, contributionCount: 1 },
     ],
   }];
 
   const result = calculateStreak(weeks, now);
-  assertEquals(result.streak, 0);
+  assertEquals(result.streak, 1);
 });
 
 // -----streak percentage-----
