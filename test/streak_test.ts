@@ -78,7 +78,6 @@ Deno.test("calculateStreak - streak continues when today has no contribution", (
 
 // -----streak start date end date
 
-// TODO: asseertをstart end dateの検証に変更
 Deno.test("calculateStreak - start date and end date is null? when no contributions", () => {
   const now = new Date("2026-01-10T12:00:00Z");
   const today = "2026-01-10";
@@ -95,9 +94,10 @@ Deno.test("calculateStreak - start date and end date is null? when no contributi
 
   const result = calculateStreak(weeks, now);
   assertEquals(result.streak, 0);
+  assertEquals(O.isNone(result.startDate), true);
+  assertEquals(O.isNone(result.endDate), true);
 });
 
-// TODO: asseertをstart end dateの検証に変更
 Deno.test("calculateStreak - start date and end date is correct when streak is not zero", () => {
   const now = new Date("2026-01-10T12:00:00Z");
   const today = "2026-01-10";
@@ -114,11 +114,13 @@ Deno.test("calculateStreak - start date and end date is correct when streak is n
 
   const result = calculateStreak(weeks, now);
   assertEquals(result.streak, 1);
+  assertEquals(result.startDate, O.some(today));
+  assertEquals(result.endDate, O.some(today));
 });
 
 // -----streak percentage-----
 Deno.test("calculateStreak - ytd count includes only current year days", () => {
-  const now = new Date("2026-01-10T12:00:00Z");
+  const now = new Date("2026-01-03T12:00:00Z");
   const todayStr = "2026-01-03";
   const yesterdayStr = "2026-01-02";
   const yearStart = "2026-01-01";
@@ -136,7 +138,11 @@ Deno.test("calculateStreak - ytd count includes only current year days", () => {
   const result = calculateStreak(weeks, now);
   assertEquals(result.ytdGrassDays, 2); // this years contribution count
   assertEquals(result.ytdTotalDays, 3);
-  // TODO: percentageの検証
+  const expectedPercentage = (2 / 3) * 100;
+  assertEquals(
+    (result.ytdGrassDays / result.ytdTotalDays) * 100,
+    expectedPercentage,
+  );
 });
 
 
