@@ -175,26 +175,15 @@ function createSvg(streakInfo: StreakInfo): string {
           streakInfo.endDate,
           O.map((end) => `
       <text
-        x="20"
-        y="90"
-        text-anchor="start"
-        font-family="'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
-        font-size="9"
-        font-weight="normal"
-        fill="${COLORS.base01}"
-      >
-        Start: ${start}
-      </text>
-      <text
         x="220"
         y="90"
         text-anchor="end"
         font-family="'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
-        font-size="9"
+        font-size="14"
         font-weight="normal"
         fill="${COLORS.base01}"
       >
-        End: ${end}
+        ${start} - ${end}
       </text>`),
         )
       ),

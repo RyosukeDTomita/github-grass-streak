@@ -158,6 +158,9 @@ Deno.test("createSvg - includes streak count", () => {
   const svg = createSvg(streakInfo);
   assertEquals(/>\s*5\s*<\/text>/.test(svg), true);
   assertEquals(svg.includes("Days Streak"), true);
+  assertEquals(svg.includes("2026-01-10 - 2026-01-14"), true);
+  assertEquals(svg.includes("Start:"), false);
+  assertEquals(svg.includes("End:"), false);
   assertEquals(svg.includes("YTD"), true);
   assertEquals(svg.includes("10/14"), true);
   assertEquals(svg.includes("71.4%"), true);
