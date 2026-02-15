@@ -1,7 +1,6 @@
 import { GH_TOKEN, GH_USER } from "./config.ts";
 import { calculateStreak, createSvg } from "./streak.ts";
 import { getContributionData } from "./githubApi.ts";
-import { pipe } from "fp-ts/function";
 import * as O from "fp-ts/Option";
 
 async function main() {
@@ -14,22 +13,21 @@ async function main() {
     Deno.exit(1);
   }
 
-  // Do not catch Exceptions
+  // not catching Exceptions
   const weeks = await getContributionData(GH_USER, GH_TOKEN);
-  console.log(weeks);
+  // console.log(weeks);
+
   const streakInfo = calculateStreak(weeks);
+
   const svg = createSvg(streakInfo);
   await Deno.writeTextFile("github-streak.svg", svg);
-  const dateRange = pipe(
-    streakInfo.startDate,
-    O.chain((start) =>
-      pipe(
-        streakInfo.endDate,
-        O.map((end) => `(${start} - ${end})`),
-      )
-    ),
-    O.getOrElse(() => ""),
-  );
+
+  const dateRange = (() => {
+    if (O.isSome(streakInfo.startDate) && O.isSome(streakInfo.endDate)) {
+      return `(${streakInfo.startDate.value} - ${streakInfo.endDate.value})`;
+    }
+    return "";
+  })();
   console.log(
     `Successfully generated github-streak.svg with a streak of ${streakInfo.streak} days ${dateRange}.`,
   );
