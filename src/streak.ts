@@ -111,11 +111,13 @@ function calculateStreak(weeks: Week[], now: Date = new Date()): StreakInfo {
  * @returns
  */
 function createSvg(streakInfo: StreakInfo): string {
-  const width = 160;
-  const height = 120;
+  const width = 240;
+  const height = 156;
   const ytdRate = streakInfo.ytdTotalDays === 0
     ? 0
     : (streakInfo.ytdGrassDays / streakInfo.ytdTotalDays) * 100;
+  const ytdText = `${streakInfo.ytdGrassDays}/${streakInfo.ytdTotalDays}`;
+  const ytdFontSize = ytdText.length >= 8 ? 18 : ytdText.length >= 7 ? 20 : 22;
 
   const icon = `
     <g transform="translate(15, 20)">
@@ -144,8 +146,8 @@ function createSvg(streakInfo: StreakInfo): string {
       />
       ${icon}
       <text
-        x="140"
-        y="55"
+        x="220"
+        y="50"
         text-anchor="end"
         font-family="'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
         font-size="40"
@@ -155,8 +157,8 @@ function createSvg(streakInfo: StreakInfo): string {
         ${streakInfo.streak}
       </text>
       <text
-        x="140"
-        y="78"
+        x="220"
+        y="70"
         text-anchor="end"
         font-family="'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
         font-size="14"
@@ -164,28 +166,6 @@ function createSvg(streakInfo: StreakInfo): string {
         fill="${COLORS.base01}"
       >
         Days Streak
-      </text>
-      <text
-        x="104"
-        y="96"
-        text-anchor="end"
-        font-family="'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
-        font-size="11"
-        font-weight="normal"
-        fill="${COLORS.base01}"
-      >
-        YTD ${streakInfo.ytdGrassDays}/${streakInfo.ytdTotalDays}
-      </text>
-      <text
-        x="140"
-        y="96"
-        text-anchor="end"
-        font-family="'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
-        font-size="11"
-        font-weight="bold"
-        fill="${COLORS.blue}"
-      >
-        ${ytdRate.toFixed(1)}%
       </text>
       ${
     pipe(
@@ -195,21 +175,85 @@ function createSvg(streakInfo: StreakInfo): string {
           streakInfo.endDate,
           O.map((end) => `
       <text
-        x="80"
-        y="112"
-        text-anchor="middle"
+        x="20"
+        y="90"
+        text-anchor="start"
         font-family="'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
-        font-size="12"
+        font-size="9"
         font-weight="normal"
         fill="${COLORS.base01}"
       >
-        ${start} - ${end}
+        Start: ${start}
+      </text>
+      <text
+        x="220"
+        y="90"
+        text-anchor="end"
+        font-family="'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
+        font-size="9"
+        font-weight="normal"
+        fill="${COLORS.base01}"
+      >
+        End: ${end}
       </text>`),
         )
       ),
       O.getOrElse(() => ""),
     )
   }
+      <line
+        x1="15"
+        y1="106"
+        x2="225"
+        y2="106"
+        stroke="${COLORS.base01}"
+        stroke-opacity="0.45"
+        stroke-width="1"
+      />
+      <text
+        x="20"
+        y="122"
+        text-anchor="start"
+        font-family="'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
+        font-size="11"
+        font-weight="normal"
+        fill="${COLORS.base01}"
+      >
+        YTD
+      </text>
+      <text
+        x="20"
+        y="140"
+        text-anchor="start"
+        font-family="'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
+        font-size="${ytdFontSize}"
+        font-weight="bold"
+        fill="${COLORS.blue}"
+      >
+        ${ytdText}<tspan dx="4" font-size="10" font-weight="normal" fill="${COLORS.base01}">days</tspan>
+      </text>
+      <text
+        x="220"
+        y="122"
+        text-anchor="end"
+        font-family="'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
+        font-size="11"
+        font-weight="normal"
+        fill="${COLORS.base01}"
+      >
+        Percent
+      </text>
+      <text
+        x="220"
+        y="140"
+        text-anchor="end"
+        font-family="'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif"
+        font-size="22"
+        font-weight="bold"
+        fill="${COLORS.blue}"
+      >
+        ${ytdRate.toFixed(1)}%
+      </text>
     </svg>
   `;
   return svg;
