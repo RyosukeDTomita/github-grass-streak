@@ -34,8 +34,8 @@ function daysFromYearStart(todayStr: string): number {
  * @param weeks
  * @returns
  */
-function calculateStreak(weeks: Week[]): StreakInfo {
-  const today = new Date();
+function calculateStreak(weeks: Week[], now: Date = new Date()): StreakInfo {
+  const today = now;
   const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
 
   const todayStr = getJSTDateString(today);
