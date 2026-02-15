@@ -1,6 +1,6 @@
 import { assertEquals } from "assertEquals";
 import { calculateStreak, createSvg } from "../src/streak.ts";
-import { Week } from "../src/type.ts";
+import { Week, StreakInfo } from "../src/type.ts";
 import * as O from "fp-ts/Option";
 
 // ------streak count-----
@@ -78,7 +78,7 @@ Deno.test("calculateStreak - streak continues when today has no contribution", (
 
 // -----streak start date end date
 
-Deno.test("calculateStreak - start date and end date is null? when no contributions", () => {
+Deno.test("calculateStreak - start date and end date is none when no contributions", () => {
   const now = new Date("2026-01-10T12:00:00Z");
   const today = "2026-01-10";
   const yesterday = "2026-01-09";
@@ -145,4 +145,19 @@ Deno.test("calculateStreak - ytd count includes only current year days", () => {
   );
 });
 
+// -----SVG Generation-----
+Deno.test("createSvg - includes streak count", () => {
+  const streakInfo: StreakInfo = {
+    streak: 5,
+    startDate: O.some("2026-01-10"),
+    endDate: O.some("2026-01-14"),
+    ytdGrassDays: 10,
+    ytdTotalDays: 14,
+  };
 
+  const svg = createSvg(streakInfo);
+  assertEquals(svg.includes("5"), true);
+  assertEquals(svg.includes("Days Streak"), true);
+  assertEquals(svg.includes("YTD 10/14"), true);
+  assertEquals(svg.includes("71.4%"), true);
+});

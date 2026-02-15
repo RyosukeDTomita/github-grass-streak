@@ -1,17 +1,9 @@
 import { COLORS } from "./config.ts";
-import { Week } from "./type.ts";
+import { Week, StreakInfo } from "./type.ts";
 import { pipe } from "fp-ts/function";
 import * as A from "fp-ts/Array";
 import * as O from "fp-ts/Option";
 import * as NEA from "fp-ts/NonEmptyArray";
-
-interface StreakInfo {
-  streak: number;
-  startDate: O.Option<string>;
-  endDate: O.Option<string>;
-  ytdGrassDays: number;
-  ytdTotalDays: number;
-}
 
 /**
  * 日本時間（JST、UTC+9）の日付文字列（YYYY-MM-DD）を取得
@@ -36,31 +28,31 @@ function daysFromYearStart(todayStr: string): number {
  */
 function calculateStreak(weeks: Week[], now: Date = new Date()): StreakInfo {
   const today = now;
-  const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
-
   const todayStr = getJSTDateString(today);
+  const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
   const yesterdayStr = getJSTDateString(yesterday);
   const yearStartStr = `${todayStr.slice(0, 4)}-01-01`;
-  const ytdTotalDays = daysFromYearStart(todayStr);
 
   const allDays = pipe(
     weeks,
     A.flatMap((week) => week.contributionDays),
   );
 
+  // For contribution rate
   const ytdGrassDays = pipe(
     allDays,
     A.filter((day) => day.date >= yearStartStr && day.date <= todayStr),
     A.filter((day) => day.contributionCount > 0),
     A.size,
   );
+  const ytdTotalDays = daysFromYearStart(todayStr);
 
   return pipe(
     allDays,
     NEA.fromArray,
     O.chain((allDays) =>
       pipe(
-        // 最後のコントリビューション日を探す
+        // find last contribution day and check if it's today or yesterday
         A.findLast<(typeof allDays)[number]>((day) =>
           day.contributionCount > 0
         )(
@@ -71,7 +63,7 @@ function calculateStreak(weeks: Week[], now: Date = new Date()): StreakInfo {
         ),
         O.map(() =>
           pipe(
-            // 配列を逆順にしてストリークをカウント
+            // reverse the array to count the streak
             allDays,
             A.reverse,
             A.reduce(
@@ -86,10 +78,9 @@ function calculateStreak(weeks: Week[], now: Date = new Date()): StreakInfo {
                     dates: [...acc.dates, day.date],
                   };
                 } else if (day.date === todayStr) {
-                  // 今日がコントリビューション0でも続行
+                  // today contribution is 0 is allowed for streak(Today is not over yet).
                   return acc;
                 } else {
-                  // それ以外の0の日でストップ
                   return { ...acc, shouldContinue: false };
                 }
               },

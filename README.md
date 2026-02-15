@@ -17,7 +17,10 @@
 
 ## ABOUT
 
-Create a GitHub contribution streak badge SVG using [GitHub EST API](https://docs.github.com/ja/rest?apiVersion=2022-11-28) and [Deno](https://deno.com/), and deploy it to [GitHub Pages](https://docs.github.com/ja/pages/getting-started-with-github-pages/creating-a-github-pages-site).
+Create a GitHub contribution streak badge SVG using
+[GitHub EST API](https://docs.github.com/ja/rest?apiVersion=2022-11-28) and
+[Deno](https://deno.com/), and deploy it to
+[GitHub Pages](https://docs.github.com/ja/pages/getting-started-with-github-pages/creating-a-github-pages-site).
 
 This is my example👇
 
@@ -25,9 +28,11 @@ This is my example👇
 
 ### Why this approach?
 
-- Stability: Existing streak tools often rely on on-demand SVG generation via external URLs, which can occasionally fail to render.
+- Stability: Existing streak tools often rely on on-demand SVG generation via
+  external URLs, which can occasionally fail to render.
 
-- Cost Free: This repository generates the SVG once per day using GitHub Actions and serves it via GitHub Pages, ensuring stable availability without any cost.
+- Cost Free: This repository generates the SVG once per day using GitHub Actions
+  and serves it via GitHub Pages, ensuring stable availability without any cost.
 
 ---
 
