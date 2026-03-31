@@ -13,6 +13,7 @@
       devShells.${system}.default = pkgs.mkShell {
         packages = [
           pkgs.deno
+          pkgs.pinact
         ];
 
         # 必要ならここに env を書く
