@@ -40,7 +40,7 @@ This is my example👇
 
 ```shell
 deno -v
-deno 2.6.3
+deno 2.8.0
 ```
 
 ---
